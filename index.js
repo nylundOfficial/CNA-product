@@ -76,17 +76,15 @@ app.get('/products', function (req, res) {
 app.post('/products', function (req, res) {
     const productId = uuidv4();
     const {modelNumber, productName, productDesc, productPrice} = req.body;
-    if (typeof productId !== 'string') {
-        res.status(400).json({ error: '"productid" must be a string' });
-    } else if (typeof modelNumber !== 'string') {
-        res.status(400).json({ error: '"productName" must be a string' });
+    if (typeof modelNumber !== 'string') {
+        res.status(400).json({ error: '"modelNumber" must be a string' });
     } else if (typeof productName !== 'string') {
         res.status(400).json({ error: '"productName" must be a string' });
     } else if (typeof productDesc !== 'string') {
         res.status(400).json({ error: '"productDesc" must be a string' });
     } else if (typeof productPrice !== 'string') {
         res.status(400).json({ error: '"productPrice" must be a string' });
-    } 
+    }
 
     const params = {
         TableName: PRODUCTS_TABLE,
@@ -103,8 +101,9 @@ app.post('/products', function (req, res) {
         if (error) {
             console.log(error);
             res.status(400).json({ error: 'Could not create product' });
+        } else {
+            res.json({ productId, modelNumber, productName, productDesc, productPrice});
         }
-        res.json({ productId, modelNumber, productName, productDesc, productPrice});
     });
 })
 
