@@ -63,9 +63,9 @@ app.get('/products', function (req, res) {
             res.status(400).json({ error: 'Could not get products' });
         }
         if (result.Items) {
-            console.log(result.Items)
+            console.log(result.Items);
             const data = result.Items;
-            res.json({ data });
+            res.json( result.Items);
         } else {
             res.status(404).json({ error: 'Products not found' });
         }
@@ -167,7 +167,7 @@ app.put('/products/:productId', function (req, res) {
             console.log(error);
             res.status(400).json({ error: 'Could not update product' });
         } else {
-            res.status(200).json({ Message: "Product updated successfully", result});
+            res.status(200).json({ Message: "Product updated successfully"});
         }
     });
 })
