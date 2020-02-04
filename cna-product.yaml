@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: CNA-product API
+  description: This API was built by the "product team" for the Cloud Native Apps course at Arcada UAS
+servers:
+  - url: bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev
+paths:
+  /products:
+    get:
+      summary: Gets all products
+      description: returns an array of product objects
+      responses:
+        '200':
+          description: An array of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    productId:
+                      type: string
+                    modelNumber:
+                      type: string
+                    productName:
+                      type: string
+                    productDesc:
+                      type: string
+                    productPrice:
+                      type: string
+        '404':
+          description: Products not found
+        '500':
+          description: Could not get products
+          
+    post:
+      summary: Creates a product
+      description: Adds a new product to the products list
+      responses:
+        '201':
+          description: Product successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productId:
+                    type: string
+                  modelNumber:
+                    type: string
+                  productName:
+                    type: string
+                  productDesc:
+                    type: string
+                  productPrice:
+                    type: string
+        '400':
+          description: Could not create product
+        '500':
+          description: Internal server error
+          
+  /products/{productId}:
+    get:
+      summary: Gets a product
+      description: Returns a single product based on the productId
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The product's id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productId:
+                    type: string
+                  modelNumber:
+                    type: string
+                  productName:
+                    type: string
+                  productDesc:
+                    type: string
+                  productPrice:
+                    type: string
+        '404':
+          description: Product not found
+        '500':
+          description: Could not get products
+    put:
+      summary: Updates a product
+      description: Updates the specified product information
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The product's id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Confirms the product was updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Could not update product
+        '500':
+          description: Internal server error
+          
+    delete:
+      summary: Deletes a product
+      description: Deletes the specified product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The product's id
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Confirms the product was deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Could not delete product
+    
+
+          
+    
+                

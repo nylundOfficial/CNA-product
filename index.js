@@ -37,13 +37,12 @@ app.get('/products/:productId', function (req, res) {
     }
 
     dynamoDb.get(params, (error, result) => {
-        if(error) {
+        if(error.statusCode == 500) {
             console.log(error);
-            res.status(400).json({ error: 'Could not get product' });
-        }
-        if (result.Item) {
+            res.status(500).json({ error: 'Could not get product' });
+        } else if (result.Item) {
             const { productId, modelNumber, productName, productDesc, productPrice} = result.Item;
-            res.json({ productId, modelNumber, productName, productDesc, productPrice });
+            res.status(200).json({ productId, modelNumber, productName, productDesc, productPrice });
         } else {
             res.status(404).json({ error: 'Product not found' });
         }
@@ -58,14 +57,12 @@ app.get('/products', function (req, res) {
     };
 
     dynamoDb.scan(params, (error, result) => {
-        if(error) {
+        if(error.statusCode == 500) {
             console.log(error);
-            res.status(400).json({ error: 'Could not get products' });
-        }
-        if (result.Items) {
+            res.status(500).json({ error: 'Could not get products' });
+        } else if (result.Items) {
             console.log(result.Items);
-            const data = result.Items;
-            res.json( result.Items);
+            res.status(200).json( result.Items);
         } else {
             res.status(404).json({ error: 'Products not found' });
         }
@@ -98,17 +95,31 @@ app.post('/products', function (req, res) {
     };
 
     dynamoDb.put(params, (error) => {
-        if (error) {
+        if (error.statusCode == 400) {
             console.log(error);
             res.status(400).json({ error: 'Could not create product' });
+        } else if (error.statusCode == 500) {
+            console.log(error);
+            res.status(500).json({ error: 'Internal server error' });
         } else {
-            res.json({ productId, modelNumber, productName, productDesc, productPrice});
+            res.status(201).json({ productId, modelNumber, productName, productDesc, productPrice});
         }
     });
 })
 
 // DELETE A PRODUCT
 app.delete('/products/:productId', function (req, res) {
+
+    console.log("QUERY" + req.query.force_failure);
+
+    if (req.query.force_failure == 1) {
+        console.log(error);
+        res.status(500).json({ error: "force_failure" });
+    } else if (error.statusCode == 500) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+    
     const params = {
         TableName: PRODUCTS_TABLE,
         Key: {
@@ -119,11 +130,11 @@ app.delete('/products/:productId', function (req, res) {
     }
 
     dynamoDb.delete(params, (error, result) => {
-        if(error) {
+        if(error.statusCode == 400) {
             console.log(error);
-            res.status(400).json({ error: 'Could not delete product' });
+            res.status(500).json({ error: 'Could not delete product' });
         } else {
-            res.status(200).json({ message: 'Item successfully deleted' });
+            res.status(204).json({ message: 'Item successfully deleted' });
         }
     });
 })
@@ -148,14 +159,12 @@ app.put('/products/:productId', function (req, res) {
 
     let expression = generateUpdateQuery(data)
 
-    console.log(expression.UpdateExpression);
-    console.log(expression.ExpressionAttributeValues);
-
     const params = {
         TableName: PRODUCTS_TABLE,
         Key:{
             productId: req.params.productId
         },
+        ConditionExpression: "attribute_exists(productId)",
         UpdateExpression: expression.UpdateExpression,
         ExpressionAttributeValues: expression.ExpressionAttributeValues,
         ReturnValues:"UPDATED_NEW"
@@ -163,7 +172,10 @@ app.put('/products/:productId', function (req, res) {
 
     console.log("Updating the item...");
     dynamoDb.update(params, (error, result) => {
-        if(error) {
+        if(error.statusCode == 500) {
+            console.log(error);
+            res.status(500).json({ error: 'Internal server error' });
+        } else if (error.statusCode == 400) { 
             console.log(error);
             res.status(400).json({ error: 'Could not update product' });
         } else {
