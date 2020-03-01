@@ -7,19 +7,8 @@ const AWS = require('aws-sdk');
 
 const PRODUCTS_TABLE = process.env.PRODUCTS_TABLE;
 
-const IS_OFFLINE = process.env.IS_OFFLINE;
-let dynamoDb;
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-
-if (IS_OFFLINE === 'true') {
-    dynamoDb = new AWS.DynamoDB.DocumentClient({
-      region: 'localhost',
-      endpoint: 'http://localhost:8000'
-    })
-    console.log(dynamoDb);
-  } else {
-    dynamoDb = new AWS.DynamoDB.DocumentClient();
-};
   
 app.use(bodyParser.json({ strict: false }));
 
@@ -40,13 +29,16 @@ app.get('/products/:productId', function (req, res) {
         if (result.Item) {
             const { productId, modelNumber, productName, productDesc, productPrice} = result.Item;
             res.status(200).json({ productId, modelNumber, productName, productDesc, productPrice });
-        } else if(error.statusCode == 500) {
+        } else if (error) {
+            // internal error
             console.log(error);
-            res.status(500).json({ error: 'Could not get product' });
+            res.status(500).json({ error: 'Could not get product' });  
         } else {
+            // trying to retrieve non-existing id
             console.log(error);
             res.status(404).json({ error: 'Product not found' });
         }
+        
     });
 })
 
@@ -61,12 +53,9 @@ app.get('/products', function (req, res) {
         if (result.Items) {
             console.log(result.Items);
             res.status(200).json( result.Items);
-        } else if (error.statusCode == 500) {
-            console.log(error);
-            res.status(500).json({ error: 'Could not get products' });
         } else {
             console.log(error);
-            res.status(404).json({ error: 'Products not found' });
+            res.status(500).json({ error: 'Could not get products' });
         }
     });
 })
@@ -76,13 +65,13 @@ app.post('/products', function (req, res) {
     const productId = uuidv4();
     const {modelNumber, productName, productDesc, productPrice} = req.body;
     if (typeof modelNumber !== 'string') {
-        res.status(400).json({ error: '"modelNumber" must be a string' });
+        res.status(400).json({ error: "'modelNumber' must be a string" });
     } else if (typeof productName !== 'string') {
-        res.status(400).json({ error: '"productName" must be a string' });
+        res.status(400).json({ error: "'productName' must be a string" });
     } else if (typeof productDesc !== 'string') {
-        res.status(400).json({ error: '"productDesc" must be a string' });
+        res.status(400).json({ error: "'productDesc' must be a string" });
     } else if (typeof productPrice !== 'string') {
-        res.status(400).json({ error: '"productPrice" must be a string' });
+        res.status(400).json({ error: "'productPrice' must be a string" });
     }
 
     const params = {
@@ -101,7 +90,7 @@ app.post('/products', function (req, res) {
             if (error.statusCode == 400) {
                 console.log(error);
                 res.status(400).json({ error: 'Could not create product' });
-            } else if (error.statusCode == 500) {
+            } else {
                 console.log(error);
                 res.status(500).json({ error: 'Internal server error' });
             }
@@ -134,7 +123,7 @@ app.delete('/products/:productId', function (req, res) {
             if(error.statusCode == 400) {
                 console.log(error);
                 res.status(500).json({ error: 'Could not delete product' });
-            } else if (error.statusCode == 500) {
+            } else {
                 console.log(error);
                 res.status(500).json({ error: 'Internal server error' });
             }
@@ -148,6 +137,16 @@ app.delete('/products/:productId', function (req, res) {
 // UPDATE A PRODUCT
 app.put('/products/:productId', function (req, res) {
     const data = req.body;
+    const {modelNumber, productName, productDesc, productPrice} = req.body;
+    if (typeof modelNumber !== 'string' && modelNumber != undefined) {
+        res.status(400).json({ error: "'modelNumber' must be a string" });
+    } else if (typeof productName !== 'string' && productName != undefined) {
+        res.status(400).json({ error: "'productName' must be a string" });
+    } else if (typeof productDesc !== 'string' && productDesc != undefined) {
+        res.status(400).json({ error: "'productDesc' must be a string" });
+    } else if (typeof productPrice !== 'string' && productPrice != undefined) {
+        res.status(400).json({ error: "'productPrice' must be a string" });
+    }
 
     const generateUpdateQuery = (fields) => {
         let exp = {
@@ -181,7 +180,7 @@ app.put('/products/:productId', function (req, res) {
             if(error.statusCode == 500) {
                 console.log(error);
                 res.status(500).json({ error: 'Internal server error' });
-            } else if (error.statusCode == 400) { 
+            } else { 
                 console.log(error);
                 res.status(400).json({ error: 'Could not update product' });
             }
