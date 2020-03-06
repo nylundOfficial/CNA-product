@@ -195,7 +195,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-app",
         "Handler": "index.handler",
@@ -219,14 +219,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AppLambdaVersionQOHOznIsndsVAvO2Uh9Nv2UFfC9XX7R6rZfV5SRi04": {
+    "AppLambdaVersionXleTO9eUPzwM9rrJfdJr06M3aNM1qEof5A8ozMKZZlU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "GetProductLambdaFunction": {
@@ -236,7 +236,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-getProduct",
         "Handler": "index.handler",
@@ -260,14 +260,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetProductLambdaVersionuq7HBzdC0MJmCxtjJhBJo5GvKLexsS7wBVFeAUq7OY": {
+    "GetProductLambdaVersionmxXuohqvnVXFAYr5cmAiYiOtC14SfbkOMB6KAJHJMLw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetProductLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "GetProductsLambdaFunction": {
@@ -277,7 +277,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-getProducts",
         "Handler": "index.handler",
@@ -301,14 +301,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetProductsLambdaVersionmus9bDfVVSj6bcW374v2Iz3wLV2v6Rt2lIR0iQHug": {
+    "GetProductsLambdaVersionFgFNzWOEam5WSCvnWtyd9tEYmJ4AQ7T7A8CUtCGzwc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetProductsLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "CreateProductLambdaFunction": {
@@ -318,7 +318,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-createProduct",
         "Handler": "index.handler",
@@ -342,14 +342,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateProductLambdaVersionygO0mlgaUZ9TrFlG30aj6kyBpfSRetOi74CvJPmYsw": {
+    "CreateProductLambdaVersionHPrF78pWOvJOtCqY9Xa8xc6otGTBnygVEjKXCUDVo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateProductLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "UpdateProductLambdaFunction": {
@@ -359,7 +359,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-updateProduct",
         "Handler": "index.handler",
@@ -383,14 +383,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateProductLambdaVersiont7z9ZpYpblU9tNObRqCD89x0NsxZEpPlhDFn67Rw0k": {
+    "UpdateProductLambdaVersionFs8XnreVVdIH8tvodc5wn6LM4vd88bCMvZ5aKn3CtE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateProductLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "DeleteProductLambdaFunction": {
@@ -400,7 +400,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/cna-products/dev/1583062229588-2020-03-01T11:30:29.588Z/cna-products.zip"
+          "S3Key": "serverless/cna-products/dev/1583499353615-2020-03-06T12:55:53.615Z/cna-products.zip"
         },
         "FunctionName": "cna-products-dev-deleteProduct",
         "Handler": "index.handler",
@@ -424,14 +424,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteProductLambdaVersionnoWBgczc9kaLD96j2vuGPcK6jga33G0TjWw2zNYTsU": {
+    "DeleteProductLambdaVersiontFtUqcSLUr0uY4A7OeAVPQlXnPjmjeaRaBS5R7TMsg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteProductLambdaFunction"
         },
-        "CodeSha256": "kVuU9yB/vtcjJpvUXmWiAOaMUTqUjFOpcogqSaS8u2Q="
+        "CodeSha256": "lQMsHbAwzCHiCEPGfs6CQsgaZe+YQu0ouwB++EABxyo="
       }
     },
     "ApiGatewayRestApi": {
@@ -792,7 +792,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1583062211516": {
+    "ApiGatewayDeployment1583499283491": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1064,37 +1064,37 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersionQOHOznIsndsVAvO2Uh9Nv2UFfC9XX7R6rZfV5SRi04"
+        "Ref": "AppLambdaVersionXleTO9eUPzwM9rrJfdJr06M3aNM1qEof5A8ozMKZZlU"
       }
     },
     "GetProductLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetProductLambdaVersionuq7HBzdC0MJmCxtjJhBJo5GvKLexsS7wBVFeAUq7OY"
+        "Ref": "GetProductLambdaVersionmxXuohqvnVXFAYr5cmAiYiOtC14SfbkOMB6KAJHJMLw"
       }
     },
     "GetProductsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetProductsLambdaVersionmus9bDfVVSj6bcW374v2Iz3wLV2v6Rt2lIR0iQHug"
+        "Ref": "GetProductsLambdaVersionFgFNzWOEam5WSCvnWtyd9tEYmJ4AQ7T7A8CUtCGzwc"
       }
     },
     "CreateProductLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateProductLambdaVersionygO0mlgaUZ9TrFlG30aj6kyBpfSRetOi74CvJPmYsw"
+        "Ref": "CreateProductLambdaVersionHPrF78pWOvJOtCqY9Xa8xc6otGTBnygVEjKXCUDVo"
       }
     },
     "UpdateProductLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateProductLambdaVersiont7z9ZpYpblU9tNObRqCD89x0NsxZEpPlhDFn67Rw0k"
+        "Ref": "UpdateProductLambdaVersionFs8XnreVVdIH8tvodc5wn6LM4vd88bCMvZ5aKn3CtE"
       }
     },
     "DeleteProductLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteProductLambdaVersionnoWBgczc9kaLD96j2vuGPcK6jga33G0TjWw2zNYTsU"
+        "Ref": "DeleteProductLambdaVersiontFtUqcSLUr0uY4A7OeAVPQlXnPjmjeaRaBS5R7TMsg"
       }
     },
     "ServiceEndpoint": {

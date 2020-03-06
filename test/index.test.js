@@ -1,20 +1,23 @@
 const chai = require('chai');
 const expect = require('chai').expect;
 const nock = require('nock');
-chai.use(require('chai-http'));
-//const handler = require('../index');
+const chaihttp = require('chai-http');
 const response = require('./response');
+chai.use(chaihttp);
+//const handler = require('../index');
+chai.should();
 
-// https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev/products
+const baseurl = 'https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev/products';
 
+//GET
 describe('GET products test', () => {
 
   it('Get all products', () => {
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .get('/products')
       .reply(200, response.productsArray);
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .get('/products')
     .end(function(err, res) {
         //console.log('RESPONSE:');
@@ -23,18 +26,44 @@ describe('GET products test', () => {
         expect(res.body).to.have.length.above(1)
       });
   });
+  it('should return statuscode 200', ()=>{
+    nock(baseurl)
+      .get('/products')
+      .reply();
+
+    chai.request(baseurl)
+    .get('/products')
+    .end((err, response) => {
+      response.should.have.status(200);
+    });
+  });
+
+
+  it('Should use http GET method', ()=>{
+    nock(baseurl)
+    .get('/products/')
+    .reply(200)
+    chai.request(baseurl)
+    .get('/products/')
+    .end(function(err, res) {
+        //console.log('RESPONSE:');
+        //console.log(res);
+        expect(res.request.method).to.eql('get')
+      });
+  });
 
 });
-
+ //GET BY ID
 describe('GET product test', () => {
 
   it('Get product by id', () => {
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-      .get('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    const id = '4d71bd14-cb7e-4b24-a858-8513b043e3fd';
+    nock(baseurl)
+      .get('/products/' + id)
       .reply(200, response.productObject);
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-    .get('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    chai.request(baseurl)
+    .get('/products/' + id)
     .end(function(err, res) {
         //console.log('RESPONSE:');
         //console.log(res.body);
@@ -49,11 +78,11 @@ describe('GET product test', () => {
   });
   
   it('Trying to retrieve non-existing productId', () => {
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .get('/products/invalid_path')
       .reply(404, {"error": "Product not found"});
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .get('/products/invalid_path')
     .end(function(err, res) {
         //console.log('RESPONSE:');
@@ -61,9 +90,39 @@ describe('GET product test', () => {
         expect(res.body).to.be.an('object')
         expect(res.body.error).to.be.a('string')
       });
-  }); 
+  });
+  it('Should return statuscode 200', (done)=>{
+    const id = '4d71bd14-cb7e-4b24-a858-8513b043e3fd';
+    nock(baseurl)
+      .get('/products' + id)
+      .reply();
+
+    chai.request(baseurl)
+    .get('/products' + id)
+    .end((err, response) => {
+      response.should.have.status(200);
+    done();
+    });
+  });
+ 
+  
+  it('Should use http GET method', ()=>{
+    const id = '4d71bd14-cb7e-4b24-a858-8513b043e3fd'
+    nock(baseurl)
+    .get('/products/' + id)
+    //.intercept('/products/' + id, 'GET')
+    .reply(200)
+    chai.request(baseurl)
+    .get('/products/' + id)
+    .end(function(err, res) {
+        //console.log('RESPONSE:');
+        //console.log(res);
+        expect(res.request.method).to.eql('get')
+      });
+  });
 });
 
+//POST
 describe('POST product test', () => {
   
   it('Create a new product', () => {
@@ -73,11 +132,11 @@ describe('POST product test', () => {
       "productDesc": "A cool hat",
       "productPrice": "37,00"
     }
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .post('/products')
       .reply(201, response.productObject);
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .post('/products')
     .send(product)
     .end(function(err, res) {
@@ -92,21 +151,20 @@ describe('POST product test', () => {
         expect(res.body.productName).to.be.a('string')
       });
   });
-  
+  const dummyProduct = {
+    "modelNumber": 1,
+    "productName": "Cool Hat",
+    "productDesc": "A cool hat",
+    "productPrice": "37,00"
+  }
   it('Unable to create new product', () => {
-    const product = {
-      "modelNumber": 1,
-      "productName": "Cool Hat",
-      "productDesc": "A cool hat",
-      "productPrice": "37,00"
-    }
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .post('/products')
       .reply(400, response.postErrors);
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .post('/products')
-    .send(product)
+    .send(dummyProduct)
     .end(function(err, res) {
         //console.log('RESPONSE:');
         //console.log(res.body.modelNumber.error);
@@ -114,21 +172,49 @@ describe('POST product test', () => {
         expect(res.body.modelNumber.error).to.be.a('string')
       });
   });
+  it('Should use http POST method', ()=>{
+    nock(baseurl)
+    .post('/products')
+    .reply();
+
+    chai.request(baseurl)
+    .post('/products')
+    .send(dummyProduct)
+    .end(function(err, res) {
+        expect(res.request.method).to.eql('post')
+      });
+  });
+  it('Should return statuscode 201 with succesful POST request', (done)=>{
+    nock(baseurl)
+      .post('/products')
+      .reply(201);
+
+    chai.request(baseurl)
+    .post('/products')
+    .send(dummyProduct)
+    .end((err, response) => {
+      console.log(response)
+      response.should.have.status(201);
+      done();
+    });
+  });
+
 
 });
 
+// PUT
 describe('PUT product test', () => {
-  
+  const product = {
+    "modelNumber": "H8"
+  }
+  const productID = '4d71bd14-cb7e-4b24-a858-8513b043e3fd';
   it('Update an existing product', () => {
-    const product = {
-      "modelNumber": "H8"
-    }
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-      .put('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    nock(baseurl)
+      .put('/products/' + productID)
       .reply(200, {"Message": "Product updated successfully"});
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-    .put('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    chai.request(baseurl)
+    .put('/products/' + productID)
     .send(product)
     .end(function(err, res) {
         //console.log('RESPONSE:');
@@ -143,11 +229,11 @@ describe('PUT product test', () => {
     const product = {
       "modelNumber": "H8"
     }
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .put('/products/invalid_path')
       .reply(400, {"error": "Could not update product"});
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .put('/products/invalid_path')
     .send(product)
     .end(function(err, res) {
@@ -156,18 +242,44 @@ describe('PUT product test', () => {
         expect(res.status).to.eql(400)
         expect(res.body.error).to.be.a('string')
       });
+  });
+  it('Should use http PUT method', ()=>{
+    nock(baseurl)
+      .put('/products/' + productID)
+      .reply()
+
+    chai.request(baseurl)
+    .put('/products/' + productID)
+    .send(product)
+    .end(function(err, res) {
+        expect(res.request.method).to.eql('put')
+      });
+  });
+  it('Should return statuscode 201 with succesful PUT request', (done)=>{
+    nock(baseurl)
+      .put('/products')
+      .reply(201);
+
+    chai.request(baseurl)
+    .put('/products')
+    .send(product)
+    .end((err, response) => {
+      response.should.have.status(201);
+      done();
+    });
   }); 
 });
 
+//DELETE
 describe('DELETE product test', () => {
-  
+  const productID = '4d71bd14-cb7e-4b24-a858-8513b043e3fd';
   it('Delete an existing product', () => {
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-      .delete('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    nock(baseurl)
+      .delete('/products/' + productID)
       .reply(204, {});
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
-    .delete('/products/4d71bd14-cb7e-4b24-a858-8513b043e3fd')
+    chai.request(baseurl)
+    .delete('/products/' + productID)
     .end(function(err, res) {
         //console.log('RESPONSE:');
         //console.log(res.body);
@@ -175,13 +287,25 @@ describe('DELETE product test', () => {
         expect(res.body).empty
       });
   });
+  it('Should return statuscode 200 with succesful DELETE request', (done)=>{
+    nock(baseurl)
+      .delete('/products' + productID)
+      .reply();
+
+    chai.request(baseurl)
+      .delete('/products' + productID)
+      .end(function(err, response){
+      expect(response.status).to.eql(200)
+      done();
+    });
+  }); 
   
   it('Trying to delete a non-existing productId', () => {
-    nock('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    nock(baseurl)
       .delete('/products/invalid_path')
       .reply(500, {"error": "Could not delete product"});
 
-    chai.request('https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev')
+    chai.request(baseurl)
     .delete('/products/invalid_path')
     .end(function(err, res) {
         //console.log('RESPONSE:');
@@ -190,4 +314,15 @@ describe('DELETE product test', () => {
         expect(res.body.error).to.be.a('string')
       });
   }); 
+  it('Should use http DELETE method', ()=>{
+    nock(baseurl)
+      .delete('/products/' + productID)
+      .reply()
+
+    chai.request(baseurl)
+    .delete('/products/' + productID)
+    .end(function(err, res) {
+        expect(res.request.method).to.eql('delete')
+      });
+  });
 });
