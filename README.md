@@ -127,9 +127,7 @@ We configurated our serverless to be able to use the AWS API-keys & secret by ru
 serverless config credentials --provider aws --key YOUR_IAM_USER_KEY --secret YOUR_IAM_USER_SECRET
 ```
 ### Create and deploy the directory
-Once we had deployed our directory, we installed express, serverless-http and uuid
-
-In this directory we created a file called index.js, which contains the code
+Once we had deployed our directory we created a file called index.js, which contains the code
 
 In the serverless.yml file that we created in the directory, we defined all our functions and configurated the HTTP triggers
 
