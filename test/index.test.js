@@ -7,7 +7,7 @@ chai.use(chaihttp);
 //const handler = require('../index');
 chai.should();
 
-const baseurl = 'https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev/products';
+const baseurl = 'https://bra2tww5y1.execute-api.eu-west-1.amazonaws.com/dev';
 
 //GET
 describe('GET products test', () => {
