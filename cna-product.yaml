@@ -37,6 +37,12 @@ paths:
     post:
       summary: Creates a product
       description: Adds a new product to the products list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createProduct'
       responses:
         '201':
           description: Product successfully created
@@ -89,8 +95,6 @@ paths:
                     type: string
                   productPrice:
                     type: string
-        '404':
-          description: Product not found
         '500':
           description: Could not get products
     put:
@@ -103,6 +107,12 @@ paths:
           description: The product's id
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateProduct'
       responses:
         '200':
           description: Confirms the product was updated successfully
@@ -140,6 +150,33 @@ paths:
                     type: string
         '500':
           description: Could not delete product
+          
+components:
+  schemas:
+    createProduct:
+      type: object
+      required:
+        - modelNumber
+        - productDesc
+        - productName
+        - productPrice
+      properties:
+        modelNumber:
+          type: string
+        productDesc:
+          type: string
+        productName:
+          type: string
+        productPrice:
+          type: string
+          
+    updateProduct:
+      type: object
+      required:
+        - modelNumber
+      properties:
+        modelNumber:
+          type: string
     
 
           

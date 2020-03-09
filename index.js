@@ -20,10 +20,10 @@ app.get('/', function (req, res) {
 //function axios
 // create a POST call to inventory team's API once a product is successfully created
 
-function axiosTesting(modelnr){
+function axiosPost(modelnr){
     console.log("axios triggered!")
     const data = { 'modelNumber': modelnr };
-    return axios.post('https://gljjr6hwrd.execute-api.eu-north-1.amazonaws.com/dev/inventory/create', data , {headers: { 'X-api-key': 'rNFakF5tUsaLF5FdzJtfZ7iv4BKmSsHC4Mo2Bk1p' }})
+    return axios.post('https://gljjr6hwrd.execute-api.eu-north-1.amazonaws.com/dev/inventory/create', data , {headers: { 'x-api-key': 'rNFakF5tUsaLF5FdzJtfZ7iv4BKmSsHC4Mo2Bk1p' }})
     .then(function() {
         const response = {
           statusCode: 200,
@@ -72,7 +72,7 @@ app.get('/products/:productId', cors(), function (req, res) {
 })
 
 // GET ALL PRODUCTS
-app.get('/products',  cors(), function (req, res) {
+app.get('/products', cors(), function (req, res) {
     const params = {
         TableName: PRODUCTS_TABLE,
         Limit: 100,
@@ -82,7 +82,6 @@ app.get('/products',  cors(), function (req, res) {
         if (result.Items) {
             console.log(result.Items);
             res.status(200).json(result.Items);
-            
         } else {
             console.log(error);
             res.status(500).json({ error: 'Could not get products' });
@@ -91,7 +90,7 @@ app.get('/products',  cors(), function (req, res) {
 })
 
 // CREATE A PRODUCT
-app.post('/products',  cors(), function (req, res) {
+app.post('/products', cors(), function (req, res) {
     const productId = uuidv4();
     const { modelNumber, productName, productDesc, productPrice } = req.body;
     if (typeof modelNumber !== 'string') {
@@ -103,7 +102,7 @@ app.post('/products',  cors(), function (req, res) {
     } else if (typeof productPrice !== 'string') {
         res.status(400).json({ error: "'productPrice' must be a string" });
     }
-    const inventoryModelnr = modelNumber;
+
     const params = {
         TableName: PRODUCTS_TABLE,
         Item: {
@@ -115,7 +114,7 @@ app.post('/products',  cors(), function (req, res) {
         },
     };
 
-    let request = dynamoDb.put(params, (error) => {
+    const request = dynamoDb.put(params, (error) => {
         if (error) {
             if (error.statusCode == 400) {
                 console.log(error);
@@ -129,17 +128,17 @@ app.post('/products',  cors(), function (req, res) {
         }
     });
 
-   const obj = JSON.parse(request.httpRequest.body);
-    console.log(obj.Item.modelNumber.S);
+   const body = request.httpRequest.body;
+   const obj = JSON.parse(body);
 
     if (obj.Item.modelNumber.S == modelNumber){
-        axiosTesting(modelNumber);
+        axiosPost(obj.Item.modelNumber.S);
     }
 
 })
 
 // DELETE A PRODUCT
-app.delete('/products/:productId',  cors(), function (req, res) {
+app.delete('/products/:productId', cors(), function (req, res) {
 
     if (req.query.force_failure == 1) {
         console.log(error);
@@ -172,7 +171,7 @@ app.delete('/products/:productId',  cors(), function (req, res) {
 
 
 // UPDATE A PRODUCT
-app.put('/products/:productId',  cors(), function (req, res) {
+app.put('/products/:productId', cors(), function (req, res) {
     const data = req.body;
     const { modelNumber, productName, productDesc, productPrice } = req.body;
     if (typeof modelNumber !== 'string' && modelNumber != undefined) {

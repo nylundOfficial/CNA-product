@@ -193,7 +193,6 @@ describe('POST product test', () => {
     .post('/products')
     .send(dummyProduct)
     .end((err, response) => {
-      console.log(response)
       response.should.have.status(201);
       done();
     });
